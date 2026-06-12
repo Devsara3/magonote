@@ -1,0 +1,14 @@
+# Macの不要ファイル
+.DS_Store
+
+# Pythonの不要ファイル
+__pycache__/
+*.pyc
+
+# AIの重いモデルファイル（GitHubには上げず、HuggingFace経由にするため）
+*.safetensors
+*.pt
+*.pth
+
+# APIキーなどの機密情報（★絶対に上げない）
+.env
