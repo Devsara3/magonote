@@ -12,3 +12,13 @@ __pycache__/
 
 # APIキーなどの機密情報（★絶対に上げない）
 .env
+*.wav
+
+# Node.js
+frontend/node_modules/
+frontend/.next/
+frontend/.env*.local
+
+# Python venv / pip
+backend/__pycache__/
+backend/**/__pycache__/

@@ -1,40 +1,35 @@
 import os
 import time
 import json
-import speech_recognition as sr
+import subprocess
+import shutil
 from openai import OpenAI
 from dotenv import load_dotenv
 
 # ==========================================
 # 初期設定
 # ==========================================
-# .envファイルからAPIキーをこっそり読み込む
+# .envファイルからAPIキーを読み込む
 load_dotenv()
 client = OpenAI()
 
 def listen_to_microphone():
-    """マイクから音声を拾い、録音データを返す"""
-    recognizer = sr.Recognizer()
-    with sr.Microphone() as source:
-        print("\n🎤 マイクの準備中... (周囲のノイズを計測しています)")
-        recognizer.adjust_for_ambient_noise(source, duration=1)
-        print("🟢 話しかけてください！ (例: 「お腹空いた」 / 終わると自動で録音停止します)")
-        
-        try:
-            # 音声が途切れるまで録音
-            audio_data = recognizer.listen(source, timeout=5, phrase_time_limit=10)
-            return audio_data
-        except sr.WaitTimeoutError:
-            print("無音が続いたため、待機に戻ります。")
-            return None
-
-def transcribe_audio(audio_data):
-    """録音データをWhisper APIに投げてテキスト化する"""
-    print("⏳ 音声をテキストに変換中 (Whisper API)...")
-    with open("temp_audio.wav", "wb") as f:
-        f.write(audio_data.get_wav_data())
+    """Ubuntu純正コマンド(arecord)で強制的に5秒録音する"""
+    print("🎤 マイクの準備完了！")
+    print("🟢 今から【5秒間】録音します！話しかけてください！ (例: 「お腹空いた」)")
     
-    with open("temp_audio.wav", "rb") as audio_file:
+    # ALSA/PyAudioのエラーを完全に回避するため、OSの純正コマンドを直接叩く
+    command = ["arecord", "-d", "5", "-f", "cd", "temp_audio.wav"]
+    # エラーログなどを画面に出さないようにして実行
+    subprocess.run(command, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    
+    print("⏹️ 録音完了！AIに送信します...")
+    return "temp_audio.wav"
+
+def transcribe_audio(file_path):
+    """録音したwavファイルをWhisper APIに投げてテキスト化する"""
+    print("⏳ 音声をテキストに変換中 (Whisper API)...")
+    with open(file_path, "rb") as audio_file:
         transcript = client.audio.transcriptions.create(
             model="whisper-1", 
             file=audio_file,
@@ -66,22 +61,54 @@ def get_intent_from_llm(user_text):
     )
     return json.loads(response.choices[0].message.content)
 
-def execute_dummy_policy(policy_name):
-    """ダミーファイルの読み込みと実行ループ"""
+def execute_real_policy(policy_name):
+    """
+    LLMが判断したポリシー名に応じて、
+    ロボット班が作成した学習済みモデルを読み込み、実機を動かす
+    """
     if policy_name == "none":
         print("⚠️ 該当するタスクがありません。待機に戻ります。")
         return
 
-    policy_path = f"policies/{policy_name}"
-    print(f"\n⚙️ フォルダ【 {policy_path} 】からAIの脳みそをロードしています...")
-    time.sleep(2) # ロード時間のダミー
-    print("✅ ロード完了！ロボットの制御を開始します。\n")
+    # 1. ロボット班のモデルが置いてあるデスクトップのパスを指定
+    model_path = f"/home/b4/Desktop/{policy_name}_model"
     
-    for i in range(30):
-        print(f"🤖 [{policy_name}] を実行中... (モーター制御信号送信: step {i+1}/30)")
-        time.sleep(0.1)
-        
-    print("\n🎉 タスク完了！ロボットが初期位置に戻りました。")
+    # 2. 上書きエラーを防ぐため、前回のテスト記録フォルダを自動削除
+    eval_dataset_path = "/home/b4/datasets/rollout_push_task_eval"
+    try:
+        shutil.rmtree(eval_dataset_path)
+        print(f"🧹 過去のテスト結果を削除しました: {eval_dataset_path}")
+    except FileNotFoundError:
+        pass
+
+    print(f"\n⚙️ 制御エンジン起動: 【{policy_name}】を実行します...")
+
+    # 3. ロボット班が成功させた推論コマンドをPythonから直接叩く
+    command = [
+        "lerobot-rollout",
+        "--strategy.type=episodic",
+        f"--policy.path={model_path}",
+        "--robot.type=so101_follower",
+        "--robot.port=/dev/ttyACM1",
+        "--robot.id=follower_arm",
+        '--robot.cameras={"front": {"type": "opencv", "index_or_path": 6, "fps": 30, "width": 640, "height": 480}}',
+        "--dataset.repo_id=rollout_push_task_eval",
+        f"--dataset.root={eval_dataset_path}",
+        f'--dataset.single_task="Execute {policy_name}"',
+        "--dataset.episode_time_s=10",
+        "--dataset.reset_time_s=5",
+        "--dataset.num_episodes=1",
+        "--play_sounds=false",
+        "--dataset.push_to_hub=false",
+        "--display_data=false"
+    ]
+
+    try:
+        # ロボットのコマンドを実行（ロボットが動き終わるまでここで待機）
+        subprocess.run(command, check=True, text=True)
+        print("\n🎉 タスク完了！ロボットが初期位置に戻りました。")
+    except subprocess.CalledProcessError as e:
+        print(f"❌ ロボットの制御中にエラーが発生しました: {e}")
 
 # ==========================================
 # メインの無限ループ（システム起動）
@@ -90,19 +117,21 @@ if __name__ == "__main__":
     print("=== 次世代介護支援システム プロトタイプ起動 ===")
     
     while True:
-        audio = listen_to_microphone()
-        if not audio:
-            continue
-            
+        # 1. マイク録音（wavファイル名が返ってくる）
+        audio_file = listen_to_microphone()
+        
         try:
-            text = transcribe_audio(audio)
+            # 2. 録音したファイルを文字起こし
+            text = transcribe_audio(audio_file)
             print(f"🗣️ 認識結果: {text}")
             
+            # 3. AIに意図を解析させる
             llm_result = get_intent_from_llm(text)
             print(f"📦 LLM出力: {llm_result}")
             
+            # 4. ロボット制御モジュールを呼び出す
             target = llm_result.get("target_policy", "none")
-            execute_dummy_policy(target)
+            execute_real_policy(target)
             
         except Exception as e:
             print(f"❌ エラーが発生しました: {e}")
