@@ -4,6 +4,7 @@ import { TaskButton } from "@/features/robot-task/ui/TaskButton";
 import { StatusBadge } from "@/shared/ui/StatusBadge";
 import { ElapsedTimer } from "@/shared/ui/ElapsedTimer";
 import { ConnectionDot } from "@/shared/ui/ConnectionDot";
+import { VoicePanel } from "@/features/voice-command/ui/VoicePanel";
 
 /* ── icons ── */
 function SpongeIcon() {
@@ -50,7 +51,7 @@ const CUP_ACCENT = {
 };
 
 export function TaskControlPanel() {
-  const { task, error, loading, connection, elapsedMs, execute, stop } = useTaskStore();
+  const { task, error, loading, connection, elapsedMs, execute, stop, startPolling } = useTaskStore();
   const isRunning = task.status === "running";
   const isDone    = task.status === "completed" || task.status === "stopped";
 
@@ -166,6 +167,19 @@ export function TaskControlPanel() {
           )}
         </div>
       )}
+
+      {/* ── Divider ── */}
+      <div className="flex items-center gap-3 py-1">
+        <div className="h-px flex-1 bg-slate-200" />
+        <span className="text-xs text-slate-400">または</span>
+        <div className="h-px flex-1 bg-slate-200" />
+      </div>
+
+      {/* ── Voice panel ── */}
+      <VoicePanel
+        disabled={isRunning || loading}
+        onTaskLaunched={startPolling}
+      />
     </div>
   );
 }

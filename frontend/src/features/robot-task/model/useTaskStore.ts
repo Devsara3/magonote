@@ -143,5 +143,5 @@ export function useTaskStore() {
     };
   }, []);
 
-  return { task, error, loading, connection, elapsedMs, execute, stop };
+  return { task, error, loading, connection, elapsedMs, execute, stop, startPolling };
 }
