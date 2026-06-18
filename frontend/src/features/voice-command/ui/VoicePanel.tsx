@@ -7,8 +7,8 @@ interface Props {
 }
 
 const TASK_LABEL: Record<string, string> = {
-  spon_mix_1and2: "スポンジタスク",
-  cup_1: "カップタスク",
+  spon_mix_1and2: "おにぎりを取る",
+  cup_1: "飲み物を取る",
 };
 
 function MicIcon() {

@@ -13,23 +13,23 @@ export const MOCK_ACTIVITIES: Activity[] = [
   // 102号室（現在 active）
   {
     id: "a-102-1", roomId: "102", timestamp: "2026-06-18T15:02:00",
-    kind: "task", taskName: "cup_1", taskLabel: "カップタスク",
+    kind: "task", taskName: "cup_1", taskLabel: "飲み物を取る",
     voiceText: "喉が渇いた、水が飲みたい", durationSec: 47, result: "completed",
   },
   {
     id: "a-102-2", roomId: "102", timestamp: "2026-06-18T12:30:00",
-    kind: "task", taskName: "spon_mix_1and2", taskLabel: "スポンジタスク",
+    kind: "task", taskName: "spon_mix_1and2", taskLabel: "おにぎりを取る",
     durationSec: 43, result: "completed", note: "ボタン操作",
   },
   {
     id: "a-102-3", roomId: "102", timestamp: "2026-06-18T09:15:00",
-    kind: "task", taskName: "cup_1", taskLabel: "カップタスク",
+    kind: "task", taskName: "cup_1", taskLabel: "飲み物を取る",
     voiceText: "飲み物をください", durationSec: 50, result: "completed",
   },
   // 101号室
   {
     id: "a-101-1", roomId: "101", timestamp: "2026-06-18T14:45:00",
-    kind: "task", taskName: "spon_mix_1and2", taskLabel: "スポンジタスク",
+    kind: "task", taskName: "spon_mix_1and2", taskLabel: "おにぎりを取る",
     voiceText: "お腹が空いた", durationSec: 44, result: "completed",
   },
   {
@@ -38,23 +38,23 @@ export const MOCK_ACTIVITIES: Activity[] = [
   },
   {
     id: "a-101-3", roomId: "101", timestamp: "2026-06-18T11:20:00",
-    kind: "task", taskName: "cup_1", taskLabel: "カップタスク",
+    kind: "task", taskName: "cup_1", taskLabel: "飲み物を取る",
     durationSec: 48, result: "stopped", note: "看護師が緊急停止",
   },
   {
     id: "a-101-4", roomId: "101", timestamp: "2026-06-18T08:50:00",
-    kind: "task", taskName: "spon_mix_1and2", taskLabel: "スポンジタスク",
+    kind: "task", taskName: "spon_mix_1and2", taskLabel: "おにぎりを取る",
     voiceText: "何か食べたい", durationSec: 46, result: "completed",
   },
   // 103号室
   {
     id: "a-103-1", roomId: "103", timestamp: "2026-06-18T13:15:00",
-    kind: "task", taskName: "spon_mix_1and2", taskLabel: "スポンジタスク",
-    voiceText: "スポンジ取ってください", durationSec: 45, result: "completed",
+    kind: "task", taskName: "spon_mix_1and2", taskLabel: "おにぎりを取る",
+    voiceText: "おにぎりをください", durationSec: 45, result: "completed",
   },
   {
     id: "a-103-2", roomId: "103", timestamp: "2026-06-18T10:05:00",
-    kind: "task", taskName: "cup_1", taskLabel: "カップタスク",
+    kind: "task", taskName: "cup_1", taskLabel: "飲み物を取る",
     durationSec: 50, result: "completed", note: "ボタン操作",
   },
   // 104号室
@@ -64,7 +64,7 @@ export const MOCK_ACTIVITIES: Activity[] = [
   },
   {
     id: "a-104-2", roomId: "104", timestamp: "2026-06-18T11:45:00",
-    kind: "task", taskName: "cup_1", taskLabel: "カップタスク",
+    kind: "task", taskName: "cup_1", taskLabel: "飲み物を取る",
     durationSec: 12, result: "error", note: "実行中に通信切断",
   },
   // 105号室

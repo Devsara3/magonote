@@ -33,16 +33,16 @@ export function TaskControlPanel() {
           <p className="mb-3 text-xs font-bold uppercase tracking-widest text-gray-400">タスク選択</p>
           <div className="grid gap-3 sm:grid-cols-2">
             <TaskButton
-              label="スポンジタスク"
-              description="spon_mix_1and2 モデル — 物体を左へ押す"
+              label="おにぎりを取る"
+              description="spon_mix_1and2 モデル — おにぎりを取って渡す"
               accentColor="border-blue-600"
               disabled={isRunning || loading}
               isActive={isRunning && task.task_type === "spon_mix_1and2"}
               onClick={() => execute("spon_mix_1and2")}
             />
             <TaskButton
-              label="カップタスク"
-              description="cup_1 モデル — 物体を左へ押す"
+              label="飲み物を取る"
+              description="cup_1 モデル — 飲み物を取って渡す"
               accentColor="border-cyan-600"
               disabled={isRunning || loading}
               isActive={isRunning && task.task_type === "cup_1"}
@@ -107,7 +107,7 @@ export function TaskControlPanel() {
               <div className="flex items-center justify-between">
                 <span className="text-sm font-semibold text-gray-700">実行中タスク</span>
                 <span className="text-sm font-bold text-gray-900">
-                  {task.task_type === "spon_mix_1and2" ? "スポンジ" : "カップ"}
+                  {task.task_type === "spon_mix_1and2" ? "おにぎり" : "飲み物"}
                 </span>
               </div>
             )}
