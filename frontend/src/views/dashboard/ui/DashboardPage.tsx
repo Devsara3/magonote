@@ -1,73 +1,55 @@
 import { TaskControlPanel } from "@/widgets/task-control-panel/ui/TaskControlPanel";
 
-function ArmIcon() {
+function LogoIcon() {
   return (
-    <svg viewBox="0 0 32 32" fill="none" className="h-8 w-8" stroke="currentColor" strokeWidth={1.5}>
-      <path d="M6 26 L12 20 L18 14 L24 8" strokeLinecap="round" />
-      <circle cx="24" cy="8" r="3" strokeWidth={2} />
-      <path d="M12 20 L8 24 L10 26 L14 22" fill="currentColor" stroke="none" opacity="0.6" />
-      <path d="M6 26 L10 28" strokeLinecap="round" strokeWidth={2.5} />
+    <svg viewBox="0 0 36 36" fill="none" className="h-7 w-7" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round">
+      <path d="M8 28 L14 20 L20 14 L28 8" className="text-violet-500" stroke="currentColor" />
+      <circle cx="28" cy="8" r="3" className="text-violet-500" stroke="currentColor" strokeWidth={2} />
+      <path d="M14 20 L10 24 L12 27 L16 23" fill="currentColor" className="text-violet-300" stroke="none" />
+      <path d="M8 28 L11 30" strokeWidth={2.5} className="text-slate-400" stroke="currentColor" />
     </svg>
   );
 }
 
 export function DashboardPage() {
   return (
-    <div className="min-h-screen" style={{ background: "linear-gradient(135deg, #0b0f1a 0%, #0f172a 50%, #0d1520 100%)" }}>
-      {/* Subtle grid overlay */}
-      <div
-        className="pointer-events-none fixed inset-0 opacity-[0.03]"
-        style={{
-          backgroundImage:
-            "linear-gradient(rgba(148,163,184,1) 1px, transparent 1px), linear-gradient(90deg, rgba(148,163,184,1) 1px, transparent 1px)",
-          backgroundSize: "40px 40px",
-        }}
-      />
+    <div className="min-h-screen bg-slate-50">
+      {/* top accent bar */}
+      <div className="h-1 w-full bg-gradient-to-r from-violet-500 via-sky-400 to-emerald-400" />
 
-      <div className="relative mx-auto max-w-2xl px-4 py-10">
+      <div className="mx-auto max-w-2xl px-4 py-10">
+
         {/* ── Header ── */}
-        <header className="mb-8">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-indigo-500/30 bg-indigo-500/10 text-indigo-400">
-                <ArmIcon />
-              </div>
-              <div>
-                <h1 className="text-xl font-bold tracking-tight text-slate-100">
-                  まごのて
-                </h1>
-                <p className="text-xs text-slate-500">
-                  HRI Dashboard — Phase 1
-                </p>
-              </div>
+        <header className="mb-8 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-white shadow-sm ring-1 ring-slate-200 text-violet-500">
+              <LogoIcon />
             </div>
-            <div className="hidden text-right sm:block">
-              <p className="text-[10px] uppercase tracking-widest text-slate-600">
-                Robot Arm Control
-              </p>
-              <p className="text-[10px] text-slate-700">so101_follower · /dev/ttyACM1</p>
+            <div>
+              <h1 className="text-lg font-bold tracking-tight text-slate-900">まごのて</h1>
+              <p className="text-xs text-slate-400">HRI Dashboard — Phase 1</p>
             </div>
           </div>
-
-          {/* Divider with glow */}
-          <div className="mt-6 h-px w-full bg-gradient-to-r from-transparent via-slate-600/60 to-transparent" />
+          <div className="hidden text-right sm:block">
+            <p className="text-[10px] font-semibold uppercase tracking-widest text-slate-400">so101 follower</p>
+            <p className="text-[10px] text-slate-300">/dev/ttyACM1</p>
+          </div>
         </header>
 
-        {/* ── Section label ── */}
-        <div className="mb-4 flex items-center gap-2">
-          <span className="text-xs font-semibold uppercase tracking-widest text-slate-600">
-            タスク制御
-          </span>
-          <div className="h-px flex-1 bg-slate-800" />
+        {/* ── Section heading ── */}
+        <div className="mb-4 flex items-center gap-3">
+          <h2 className="text-sm font-semibold text-slate-700">タスク制御</h2>
+          <div className="h-px flex-1 bg-slate-200" />
         </div>
 
         {/* ── Main panel ── */}
         <TaskControlPanel />
 
         {/* ── Footer ── */}
-        <footer className="mt-10 text-center text-[10px] text-slate-700">
+        <footer className="mt-10 text-center text-[11px] text-slate-300">
           LeRobot · so101_follower · camera index 4 · localhost:8000
         </footer>
+
       </div>
     </div>
   );
