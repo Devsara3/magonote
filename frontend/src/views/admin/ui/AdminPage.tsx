@@ -20,10 +20,10 @@ export function AdminPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      <div className="mx-auto max-w-5xl px-4 py-8">
+      <div className="mx-auto max-w-7xl px-6 py-8">
 
         {/* ── ヘッダー ── */}
-        <header className="mb-6 border-b-2 border-gray-200 pb-4">
+        <header className="mb-6 border-b-2 border-gray-200 pb-5">
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-2xl font-extrabold text-gray-900">スタッフ管理画面</h1>
@@ -38,8 +38,8 @@ export function AdminPage() {
           </div>
         </header>
 
-        {/* ── サマリー（横並び・色はエラーのみ赤） ── */}
-        <div className="mb-6 flex flex-wrap gap-6 border-b border-gray-100 pb-6">
+        {/* ── サマリー ── */}
+        <div className="mb-6 flex flex-wrap gap-8 border-b border-gray-100 pb-6">
           {[
             { label: "動作中",     value: activeCount,     unit: "台",  highlight: false },
             { label: "要確認",     value: errorCount,      unit: "台",  highlight: errorCount > 0 },
@@ -55,11 +55,11 @@ export function AdminPage() {
           ))}
         </div>
 
-        {/* ── 2カラム ── */}
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-[240px_1fr]">
+        {/* ── 2カラム: 病室リスト + 活動ログ ── */}
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-[300px_1fr]">
 
           {/* 左: 病室リスト */}
-          <div>
+          <div className="lg:sticky lg:top-8 lg:self-start">
             <p className="mb-2 text-xs font-bold uppercase tracking-widest text-gray-400">
               病室一覧 · {MOCK_ROOMS.length}室
             </p>
@@ -72,7 +72,6 @@ export function AdminPage() {
 
           {/* 右: 活動ログ */}
           <div>
-            {/* 病室ヘッダー */}
             <div className="mb-4 flex items-center justify-between border-b border-gray-100 pb-3">
               <div>
                 <p className="text-base font-extrabold text-gray-900">
@@ -91,7 +90,7 @@ export function AdminPage() {
           </div>
         </div>
 
-        <footer className="mt-10 text-xs text-gray-300">
+        <footer className="mt-12 text-xs text-gray-300">
           ※ デモ用モックデータ表示中
         </footer>
       </div>
